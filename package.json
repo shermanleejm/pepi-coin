@@ -1,6 +1,30 @@
 {
   "dependencies": {
+    "body-parse": "^0.1.0",
     "crypto-js": "^4.0.0",
-    "elliptic": "^6.5.4"
-  }
+    "elliptic": "^6.5.4",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "name": "pepi-coin",
+  "version": "1.0.0",
+  "main": "tests.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shermanleejm/pepi-coin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shermanleejm/pepi-coin/issues"
+  },
+  "homepage": "https://github.com/shermanleejm/pepi-coin#readme",
+  "description": ""
 }
