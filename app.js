@@ -16,24 +16,38 @@ app.get('/blocks', (req, res) => {
 
 // add transaction
 app.post('/add-transaction', (req, res) => {
-  const transaction = new Transaction(
-    req.body.fromAddress,
-    req.body.toAddress,
-    req.body.amount,
-    req.body.signature,
-    req.body.timestamp
-  );
-
-  try {
-    transaction.isValid();
-  } catch (err) {
-    if (req.body.signature !== undefined) {
-      return res.json('Please sign the transaction with the correct private key');
-    }
+  if (req.body.private === undefined) {
+    return res.json('Please provide a private key');
   }
 
-  blockchain.addTransaction(transaction);
+  let transaction = new Transaction(
+    req.body.fromAddress,
+    req.body.toAddress,
+    req.body.amount
+  );
+
+  transaction.signTransaction(req.body.private, req.body.fromAddress);
+
+  try {
+    blockchain.addTransaction(transaction);
+  } catch (err) {
+    return res.json(err.message);
+  }
+
   res.json(blockchain.pending);
+});
+
+app.post('/mine', (req, res) => {
+  if (req.body.toAddress === undefined)
+    return res.json('please provide an toAddress for reward');
+
+  try {
+    blockchain.minePending(req.body.toAddress);
+  } catch (err) {
+    return res.json(err.message);
+  }
+
+  res.redirect('/blocks');
 });
 
 app.listen(port, () => {

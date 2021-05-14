@@ -19,10 +19,12 @@ const myPrivateKey = 'cfcaa368a29d93c989a6a0879e9ef693319f0d6decc843725c99ce879e
 const myAddress =
   '045c68da8f4794dbd55cf487697d1e5cef2c2878584e8bd2e6a19ab50dcaf36bd7c455c665e2e1fb140712f2cbf2b7d9575da21cd0fdf579c4c90717bb7c3c9997';
 
-const tx1 = new Transaction(myAddress, 'Recipient Address', 10);
+const tx1 = new Transaction(myAddress, 'Recipient Address', 10, Date.now());
 tx1.signTransaction(myPrivateKey, myAddress);
 
 console.log(JSON.stringify(tx1));
+
+console.log(tx1.isValid());
 
 // alphaChain.addTransaction(tx1);
 

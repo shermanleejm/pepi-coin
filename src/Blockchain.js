@@ -21,21 +21,15 @@ class Blockchain {
   minePending(rewardAddress) {
     // cant mine unless pending reaches size of this.maxTransactionLength or more
     if (this.pending.length < this.maxTransactionLength) {
-      return;
+      throw new Error('Nothing to mine');
     }
 
     // create reward transaction
     const rewardTransaction = new Transaction(null, rewardAddress, this.reward);
 
-    // add reward transaction to transactions to verify
-    const stuffToVerify = this.pending.splice(
-      this.pending.length - this.maxTransactionLength,
-      this.pending.length
-    );
-    stuffToVerify.push(rewardTransaction);
-
-    // fix the number of transactions that are mined in each block
-    let block = new Block(Date.now(), stuffToVerify);
+    this.pending.push(rewardTransaction);
+    
+    let block = new Block(Date.now(), this.pending, this.chain[this.chain.length - 1].hash);
     block.mineBlock(this.difficulty);
 
     this.chain.push(block);
@@ -55,7 +49,15 @@ class Blockchain {
         throw new Error('Duplicate transaction');
       }
     }
-    console.log('added new transaction');
+
+    for (let block of this.chain) {
+      for (let trx of block.transactions) {
+        if (trx.signature === transaction.signature) {
+          throw new Error('Duplicate transaction');
+        }
+      }
+    }
+
     this.pending.push(transaction);
   }
 
