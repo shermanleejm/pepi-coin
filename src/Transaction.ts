@@ -2,12 +2,14 @@ const Elliptic = require('elliptic').ec;
 const ec = new Elliptic('secp256k1');
 const SHA256 = require('crypto-js').SHA256;
 
-class Transaction {
-  constructor(
-    fromAddress,
-    toAddress,
-    amount,
-  ) {
+export class Transaction {
+  public fromAddress: string;
+  public toAddress: string;
+  public amount: number;
+  private timestamp: number;
+  public signature: string;
+
+  constructor(fromAddress, toAddress, amount) {
     this.fromAddress = fromAddress;
     this.toAddress = toAddress;
     this.amount = amount;
@@ -42,4 +44,3 @@ class Transaction {
   }
 }
 
-module.exports = Transaction;

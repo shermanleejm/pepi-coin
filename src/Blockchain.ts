@@ -1,17 +1,22 @@
-const Block = require('./Block');
-const Transaction = require('./Transaction');
+import { Block } from './Block';
+import { Transaction } from './Transaction';
 
-class Blockchain {
+export class Blockchain {
+  private chain: Block[];
+  private difficulty: number;
+  private pending: Transaction[];
+  private reward: number;
+  private maxTransactionLength: number = 1
+
   constructor() {
     this.chain = [this.createFirstBlock()];
     this.difficulty = 2;
     this.pending = [];
     this.reward = 100;
-    this.maxTransactionLength = 1;
   }
 
   createFirstBlock() {
-    return new Block(Date.now() / 1000, []);
+    return new Block(Date.now(), []);
   }
 
   getLatestBlock() {
@@ -28,8 +33,12 @@ class Blockchain {
     const rewardTransaction = new Transaction(null, rewardAddress, this.reward);
 
     this.pending.push(rewardTransaction);
-    
-    let block = new Block(Date.now(), this.pending, this.chain[this.chain.length - 1].hash);
+
+    let block = new Block(
+      Date.now(),
+      this.pending,
+      this.chain[this.chain.length - 1].hash
+    );
     block.mineBlock(this.difficulty);
 
     this.chain.push(block);
@@ -108,5 +117,3 @@ class Blockchain {
     }
   }
 }
-
-module.exports = Blockchain;

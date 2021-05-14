@@ -1,7 +1,15 @@
+import { Transaction } from './Transaction';
+
 const SHA256 = require('crypto-js').SHA256;
 
-class Block {
-  constructor(timestamp, transactions, previousHash = '') {
+export class Block {
+  private timestamp: number;
+  public transactions: Transaction[];
+  public previousHash: string;
+  public hash: string;
+  private nonce: number;
+
+  public constructor(timestamp: number, transactions: Transaction[], previousHash = '') {
     this.timestamp = timestamp;
     this.transactions = transactions;
     this.previousHash = previousHash;
@@ -24,7 +32,7 @@ class Block {
   }
 
   isValid() {
-    for (let tx of this.transactions) {
+    for (var tx of this.transactions) {
       if (!tx.isValid()) {
         return false;
       }
@@ -32,5 +40,3 @@ class Block {
     return true;
   }
 }
-
-module.exports = Block;

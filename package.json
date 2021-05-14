@@ -3,7 +3,8 @@
     "body-parse": "^0.1.0",
     "crypto-js": "^4.0.0",
     "elliptic": "^6.5.4",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "ws": "^7.4.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
