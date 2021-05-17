@@ -1,15 +1,15 @@
-const Elliptic = require('elliptic').ec;
-const ec = new Elliptic('secp256k1');
-const SHA256 = require('crypto-js').SHA256;
+const Elliptic = require("elliptic").ec;
+const ec = new Elliptic("secp256k1");
+const SHA256 = require("crypto-js").SHA256;
 
 export class Transaction {
-  public fromAddress: string;
+  public fromAddress: null | string;
   public toAddress: string;
   public amount: number;
   private timestamp: number;
-  public signature: string;
+  public signature: string | undefined;
 
-  constructor(fromAddress, toAddress, amount) {
+  constructor(fromAddress: string | null, toAddress: string, amount: number) {
     this.fromAddress = fromAddress;
     this.toAddress = toAddress;
     this.amount = amount;
@@ -22,14 +22,16 @@ export class Transaction {
     ).toString();
   }
 
-  signTransaction(privateKey, publicKey) {
+  signTransaction(privateKey: string, publicKey: string) {
     if (publicKey !== this.fromAddress) {
-      throw new Error('Wrong public key!!!!!');
+      throw new Error("Wrong public key!!!!!");
     }
 
     const hashTransaction = this.calculateHash();
-    const signature = ec.keyFromPrivate(privateKey).sign(hashTransaction, 'base64');
-    this.signature = signature.toDER('hex');
+    const signature = ec
+      .keyFromPrivate(privateKey)
+      .sign(hashTransaction, "base64");
+    this.signature = signature.toDER("hex");
   }
 
   isValid() {
@@ -39,8 +41,7 @@ export class Transaction {
       return false;
     }
 
-    const publicKey = ec.keyFromPublic(this.fromAddress, 'hex');
+    const publicKey = ec.keyFromPublic(this.fromAddress, "hex");
     return publicKey.verify(this.calculateHash(), this.signature);
   }
 }
-

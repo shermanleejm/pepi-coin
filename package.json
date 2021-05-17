@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@types/ws": "^7.4.4",
     "body-parse": "^0.1.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
@@ -17,15 +18,17 @@
     "@types/express": "^4.17.11",
     "@types/helmet": "^4.0.0",
     "@types/node": "^15.3.0",
-    "nodemon": "^2.0.7",
-    "ts-node": "^9.1.1"
+    "nodemon": "^2.0.7"
   },
   "name": "pepi-coin",
   "version": "1.0.0",
   "main": "tests.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --pretty --transpile-only app.ts"
+    "dev": "ts-node-dev --respawn --pretty --transpile-only app.ts",
+    "ws1": "npm run dev",
+    "ws2": "HTTP_PORT=6970 P2P_PORT=6970 PEERS=ws://localhost:6969 npm run dev",
+    "ws3": "HTTP_PORT=6971 P2P_PORT=6971 PEERS=ws://localhost:6969,ws://localhost:6970 npm run dev"
   },
   "repository": {
     "type": "git",
