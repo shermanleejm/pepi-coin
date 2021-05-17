@@ -1,5 +1,5 @@
-import { Block } from "./Block";
-import { Transaction } from "./Transaction";
+import { Block } from './Block';
+import { Transaction } from './Transaction';
 
 export class Blockchain {
   public chain: Block[];
@@ -26,12 +26,11 @@ export class Blockchain {
   minePending(rewardAddress: string) {
     // cant mine unless pending reaches size of this.maxTransactionLength or more
     if (this.pending.length < this.maxTransactionLength) {
-      throw new Error("Nothing to mine");
+      throw new Error('Nothing to mine');
     }
 
     // create reward transaction
     const rewardTransaction = new Transaction(null, rewardAddress, this.reward);
-
     this.pending.push(rewardTransaction);
 
     let block = new Block(
@@ -46,23 +45,23 @@ export class Blockchain {
 
   addTransaction(transaction: Transaction) {
     if (!transaction.fromAddress || !transaction.toAddress) {
-      throw new Error("Transaction addresses are missing!!!");
+      throw new Error('Transaction addresses are missing!!!');
     }
 
     if (!transaction.isValid()) {
-      throw new Error("Invalid transaction!!!");
+      throw new Error('Invalid transaction!!!');
     }
 
     for (let trx of this.pending) {
       if (trx.signature === transaction.signature) {
-        throw new Error("Duplicate transaction");
+        throw new Error('Duplicate transaction');
       }
     }
 
     for (let block of this.chain) {
       for (let trx of block.transactions) {
         if (trx.signature === transaction.signature) {
-          throw new Error("Duplicate transaction");
+          throw new Error('Duplicate transaction');
         }
       }
     }
@@ -109,11 +108,30 @@ export class Blockchain {
     return true;
   }
 
-  replaceChain(newChain: Blockchain) {
-    if (newChain.chain.length >= this.chain.length && newChain.isValid()) {
-      this.chain = newChain.chain;
-    } else {
-      console.log("invalid replacement chain");
+  isPeerValid(data: any[]) {
+    console.log('validating peer chain');
+    if (data.length === 1) return true;
+    if (data.length === 0) return false;
+    for (let i = 1; i < data.length; i++) {
+      if (data[i].previousHash === undefined) return false;
+      if (data[i - 1].hash === undefined) return false;
+      if (data[i].previousHash !== data[i - 1].hash) return false;
     }
+    return true;
+  }
+
+  replaceChain(newChain: any[]) {
+    if (newChain.length <= this.chain.length) {
+      console.log('new chain is shorter than own chain');
+      return;
+    }
+
+    if (this.isPeerValid(newChain)) {
+      this.chain = newChain;
+    } else {
+      console.log('invalid replacement chain');
+    }
+
+    console.log("replaced chain")
   }
 }

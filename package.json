@@ -24,11 +24,10 @@
   "version": "1.0.0",
   "main": "tests.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --pretty --transpile-only app.ts",
     "ws1": "npm run dev",
-    "ws2": "HTTP_PORT=6970 P2P_PORT=6970 PEERS=ws://localhost:6969 npm run dev",
-    "ws3": "HTTP_PORT=6971 P2P_PORT=6971 PEERS=ws://localhost:6969,ws://localhost:6970 npm run dev"
+    "ws2": "PORT=3002 PEERS=ws://localhost:3001 npm run dev",
+    "ws3": "PORT=3004 PEERS=ws://localhost:3003,ws://localhost:3001 npm run dev"
   },
   "repository": {
     "type": "git",
