@@ -5,7 +5,7 @@ export class P2pserver {
 
   // TODO: set up DNS server and update
   private peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
-//hehe
+//hehehe
   private blockchain: Blockchain;
   private sockets: string[];
 
