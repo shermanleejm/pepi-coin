@@ -1,23 +1,23 @@
-const express = require('express');
+import express, { Request, Response } from "express";
+import { Block, Blockchain, Transaction } from "./src";
+
 const app = express();
 const port = process.env.PORT || 3000;
-const Blockchain = require('./src/Blockchain');
-const Transaction = require('./src/Transaction');
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
-const blockchain = new Blockchain();
+var blockchain = new Blockchain();
 
 // display all blocks
-app.get('/blocks', (req, res) => {
-  return res.json(blockchain.chain);
+app.get("/blocks", (req: Request, res: Response) => {
+  return res.status(200).json(blockchain.chain);
 });
 
 // add transaction
-app.post('/add-transaction', (req, res) => {
+app.post("/add-transaction", (req, res) => {
   if (req.body.private === undefined) {
-    return res.json('Please provide a private key');
+    return res.json("Please provide a private key");
   }
 
   let transaction = new Transaction(
@@ -34,12 +34,12 @@ app.post('/add-transaction', (req, res) => {
     return res.json(err.message);
   }
 
-  res.json(blockchain.pending);
+  res.status(200).json(blockchain.pending);
 });
 
-app.post('/mine', (req, res) => {
+app.post("/mine", (req, res) => {
   if (req.body.toAddress === undefined)
-    return res.json('please provide an toAddress for reward');
+    return res.json("please provide an toAddress for reward");
 
   try {
     blockchain.minePending(req.body.toAddress);
@@ -47,7 +47,7 @@ app.post('/mine', (req, res) => {
     return res.json(err.message);
   }
 
-  res.redirect('/blocks');
+  res.redirect("/blocks");
 });
 
 app.listen(port, () => {

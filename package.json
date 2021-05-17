@@ -1,21 +1,31 @@
 {
   "dependencies": {
     "body-parse": "^0.1.0",
+    "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
+    "dotenv": "^9.0.2",
     "elliptic": "^6.5.4",
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.4",
     "ws": "^7.4.5"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.10",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11",
+    "@types/helmet": "^4.0.0",
     "@types/node": "^15.3.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1"
   },
   "name": "pepi-coin",
   "version": "1.0.0",
   "main": "tests.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "ts-node-dev --respawn --pretty --transpile-only app.ts"
   },
   "repository": {
     "type": "git",
@@ -28,5 +38,6 @@
     "url": "https://github.com/shermanleejm/pepi-coin/issues"
   },
   "homepage": "https://github.com/shermanleejm/pepi-coin#readme",
-  "description": ""
+  "description": "",
+  "type": "module"
 }

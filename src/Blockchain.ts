@@ -1,12 +1,12 @@
-import { Block } from './Block';
-import { Transaction } from './Transaction';
+import { Block } from "./Block";
+import { Transaction } from "./Transaction";
 
 export class Blockchain {
-  private chain: Block[];
+  public chain: Block[];
   private difficulty: number;
-  private pending: Transaction[];
+  public pending: Transaction[];
   private reward: number;
-  private maxTransactionLength: number = 1
+  private maxTransactionLength: number = 1;
 
   constructor() {
     this.chain = [this.createFirstBlock()];
@@ -23,10 +23,10 @@ export class Blockchain {
     return this.chain[this.chain.length - 1];
   }
 
-  minePending(rewardAddress) {
+  minePending(rewardAddress: string) {
     // cant mine unless pending reaches size of this.maxTransactionLength or more
     if (this.pending.length < this.maxTransactionLength) {
-      throw new Error('Nothing to mine');
+      throw new Error("Nothing to mine");
     }
 
     // create reward transaction
@@ -44,25 +44,25 @@ export class Blockchain {
     this.chain.push(block);
   }
 
-  addTransaction(transaction) {
+  addTransaction(transaction: Transaction) {
     if (!transaction.fromAddress || !transaction.toAddress) {
-      throw new Error('Transaction addresses are missing!!!');
+      throw new Error("Transaction addresses are missing!!!");
     }
 
     if (!transaction.isValid()) {
-      throw new Error('Invalid transaction!!!');
+      throw new Error("Invalid transaction!!!");
     }
 
     for (let trx of this.pending) {
       if (trx.signature === transaction.signature) {
-        throw new Error('Duplicate transaction');
+        throw new Error("Duplicate transaction");
       }
     }
 
     for (let block of this.chain) {
       for (let trx of block.transactions) {
         if (trx.signature === transaction.signature) {
-          throw new Error('Duplicate transaction');
+          throw new Error("Duplicate transaction");
         }
       }
     }
@@ -70,7 +70,7 @@ export class Blockchain {
     this.pending.push(transaction);
   }
 
-  getBalanceOfAddress(address) {
+  getBalanceOfAddress(address: string) {
     let balance = 0;
 
     for (const block of this.chain) {
@@ -109,11 +109,11 @@ export class Blockchain {
     return true;
   }
 
-  replaceChain(newChain) {
-    if (newChain.length >= this.chain.length && newChain.isValid()) {
-      this.chain = newChain;
+  replaceChain(newChain: Blockchain) {
+    if (newChain.chain.length >= this.chain.length && newChain.isValid()) {
+      this.chain = newChain.chain;
     } else {
-      console.log('invalid replacement chain');
+      console.log("invalid replacement chain");
     }
   }
 }

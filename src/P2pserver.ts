@@ -5,16 +5,16 @@ export class P2pserver {
 
   // TODO: set up DNS server and update
   private peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
-//hehehe
+
   private blockchain: Blockchain;
   private sockets: string[];
 
-  constructor(blockchain) {
+  constructor(blockchain: Blockchain) {
     this.blockchain = blockchain;
     this.sockets = [];
   }
 
-  connectSocket(socket) {
+  connectSocket(socket: string) {
     this.sockets.push(socket);
   }
 
@@ -30,7 +30,7 @@ export class P2pserver {
     let ws = require('ws');
     const server = ws.Server({ port: this.P2P_PORT });
 
-    server.on('connection', (socket) => this.connectSocket(socket));
+    server.on('connection', (socket: string) => this.connectSocket(socket));
 
     this.connectToPeers();
   }
