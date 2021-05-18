@@ -1,6 +1,6 @@
-const Elliptic = require("elliptic").ec;
-const ec = new Elliptic("secp256k1");
-const SHA256 = require("crypto-js").SHA256;
+import { eddsa } from 'elliptic';
+const ec = new eddsa('ed25519');
+const SHA256 = require('crypto-js').SHA256;
 
 export class Transaction {
   public fromAddress: null | string;
@@ -24,14 +24,12 @@ export class Transaction {
 
   signTransaction(privateKey: string, publicKey: string) {
     if (publicKey !== this.fromAddress) {
-      throw new Error("Wrong public key!!!!!");
+      throw new Error('Wrong public key!!!!!');
     }
 
     const hashTransaction = this.calculateHash();
-    const signature = ec
-      .keyFromPrivate(privateKey)
-      .sign(hashTransaction, "base64");
-    this.signature = signature.toDER("hex");
+    const signature = ec.keyFromSecret(privateKey).sign(hashTransaction).toHex();
+    this.signature = signature;
   }
 
   isValid() {
@@ -41,7 +39,7 @@ export class Transaction {
       return false;
     }
 
-    const publicKey = ec.keyFromPublic(this.fromAddress, "hex");
+    const publicKey = ec.keyFromPublic(this.fromAddress);
     return publicKey.verify(this.calculateHash(), this.signature);
   }
 }

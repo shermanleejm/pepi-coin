@@ -48,7 +48,6 @@ export class P2pserver {
   }
 
   sendChain(socket: ws) {
-    console.log(this.blockchain.chain);
     socket.send(JSON.stringify(this.blockchain.chain));
   }
 

@@ -6,7 +6,7 @@ export class Blockchain {
   private difficulty: number;
   public pending: Transaction[];
   private reward: number;
-  private maxTransactionLength: number = 1;
+  private maxTransactionLength: number = 8;
 
   constructor() {
     this.chain = [this.createFirstBlock()];
@@ -41,6 +41,8 @@ export class Blockchain {
     block.mineBlock(this.difficulty);
 
     this.chain.push(block);
+
+    this.pending = [];
   }
 
   addTransaction(transaction: Transaction) {
@@ -129,9 +131,9 @@ export class Blockchain {
     if (this.isPeerValid(newChain)) {
       this.chain = newChain;
     } else {
-      console.log('invalid replacement chain');
+      console.log('invalid peer chain');
     }
 
-    console.log("replaced chain")
+    console.log('replaced chain');
   }
 }
