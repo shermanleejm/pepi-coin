@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
-import { Block, Blockchain, Transaction, P2pserver } from '.';
+import { Blockchain, Transaction, P2pserver } from '.';
+import { ADD_TRANSACTION_ROUTE, BLOCKS_ROUTE, MINE_ROUTE } from './const';
 
 export const app = express();
 const bodyParser = require('body-parser');
@@ -10,12 +11,12 @@ const blockchain = new Blockchain();
 export const p2pserver = new P2pserver(blockchain);
 
 // display all blocks
-app.get('/blocks', (req: Request, res: Response) => {
+app.get(BLOCKS_ROUTE, (req: Request, res: Response) => {
   return res.status(200).json(blockchain.chain);
 });
 
 // add transaction
-app.post('/add-transaction', (req, res) => {
+app.post(ADD_TRANSACTION_ROUTE, (req, res) => {
   if (req.body.private === undefined) {
     return res.json('Please provide a private key');
   }
@@ -35,7 +36,7 @@ app.post('/add-transaction', (req, res) => {
   res.status(200).json(blockchain.pending);
 });
 
-app.post('/mine', (req, res) => {
+app.post(MINE_ROUTE, (req, res) => {
   if (req.body.toAddress === undefined)
     return res.json('please provide an toAddress for reward');
 
@@ -47,5 +48,5 @@ app.post('/mine', (req, res) => {
 
   p2pserver.broadcastChain();
 
-  res.redirect('/blocks');
+  res.redirect(BLOCKS_ROUTE);
 });

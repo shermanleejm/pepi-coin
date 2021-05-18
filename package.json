@@ -33,7 +33,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles",
     "coverage": "jest --coverage",
-    "dev": "ts-node-dev --respawn --pretty --transpile-only app.ts",
+    "dev": "ts-node-dev --respawn --pretty --transpile-only server.ts",
     "ws1": "npm run dev",
     "ws2": "PORT=3002 PEERS=ws://localhost:3001 npm run dev",
     "ws3": "PORT=3004 PEERS=ws://localhost:3003,ws://localhost:3001 npm run dev"
